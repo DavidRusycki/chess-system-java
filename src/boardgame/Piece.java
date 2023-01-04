@@ -1,5 +1,9 @@
 package boardgame;
 
+/**
+ * Classe base de peça.
+ * @author David
+ */
 public class Piece {
 
 	protected Position position;

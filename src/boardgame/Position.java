@@ -1,5 +1,9 @@
 package boardgame;
 
+/**
+ * Responsável por definir informações de posição.
+ * @author David
+ */
 public class Position {
 
 	private int row;
