@@ -2,6 +2,7 @@ package chess;
 
 import boardgame.Board;
 import boardgame.Piece;
+import boardgame.Position;
 
 /**
  * Classe responsável por definir dados de uma peça do jogo.
@@ -18,6 +19,12 @@ public abstract class ChessPiece extends Piece {
 	
 	public Color getColor() {
 		return this.color;
+	}
+	
+	protected boolean isThereOpponentPiece(Position position) {
+		ChessPiece p = (ChessPiece) this.getBoard().piece(position);
+		
+		return p != null && p.getColor() != this.getColor(); 
 	}
 	
 }
