@@ -42,10 +42,10 @@ public class Board {
 	}
 	
 	public Piece removePiece(Position position) {
-		if (!positionExists(position)) {
+		if (!this.positionExists(position)) {
 			throw new BoardException("Posição não existe.");
 		}
-		if (piece(position) == null) {
+		if (this.piece(position) == null) {
 			return null;
 		}
 		Piece aux = this.piece(position);
