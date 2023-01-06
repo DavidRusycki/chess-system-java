@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Scanner;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -12,13 +14,25 @@ import chess.pieces.Rook;
  */
 public class ChessMatch {
 
+	private int turn;
+	private Color currentPlayer;
 	private Board board;
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
+		this.turn = 1;
+		this.currentPlayer = Color.WHITE;
 		this.initialSetup();
 	}
-	
+		
+	public int getTurn() {
+		return turn;
+	}
+
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] mat = new ChessPiece[this.board.getRows()][this.board.getColumns()];
 		for (int i = 0; i < this.board.getRows(); i++) {
@@ -31,6 +45,7 @@ public class ChessMatch {
 	
 	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
 		Position p = sourcePosition.toPosition();
+		this.validateSourcePosition(p);
 		return this.board.piece(p).possibleMoves();
 	}
 	
@@ -40,6 +55,7 @@ public class ChessMatch {
 		this.validateSourcePosition(source);
 		this.validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
+		this.nextTurn();
 		return (ChessPiece) capturedPiece;
 	}
 	
@@ -54,6 +70,9 @@ public class ChessMatch {
 		if (!this.board.thereIsAPiece(position)) {
 			throw new ChessException("Não existe peça na posição de origem.");
 		}
+		if (this.currentPlayer != ((ChessPiece)this.board.piece(position)).getColor()) {
+			throw new ChessException("A peça escolhida não é sua.");
+		}
 		if (!this.board.piece(position).isTherePossibleMove()) {
 			throw new ChessException("Não existe movimentos possíveis para a peça escolhida.");
 		}
@@ -63,6 +82,11 @@ public class ChessMatch {
 		if (!this.board.piece(source).possibleMove(target)) {
 			throw new ChessException("A peça escolhida não pode ser movida para a posição de destino.");
 		}
+	}
+	
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
 	}
 	
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
